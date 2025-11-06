@@ -1,8 +1,8 @@
 --------------------------------------------------------------------------------
 -- BANCO DE DADOS: ORACLE
 -- PROJETO: E-COMMERCE INICIAL
--- TOTAL DE TABELAS: 
--- AUTOR: ALEXIS PEREIRA DOS SANTOS
+-- TOTAL DE TABELAS: 10
+-- AUTOR: Juliana Mascarenhas - Instrutora (Digital Innovation One)
 --------------------------------------------------------------------------------
 
 
