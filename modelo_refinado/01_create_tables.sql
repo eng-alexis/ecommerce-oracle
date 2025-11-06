@@ -5,7 +5,6 @@
 -- AUTOR: ALEXIS PEREIRA DOS SANTOS
 --------------------------------------------------------------------------------
 
-
 --------------------------------------------------------------------------------
 -- TABELA: GENERO
 --------------------------------------------------------------------------------
@@ -45,7 +44,7 @@ CREATE TABLE REGIAO(
     NOME_REGIAO VARCHAR(20) NOT NULL,
     SIGLA CHAR(2) NOT NULL,
 
-    CONSTRAINT UQ_REGIAO_NOME_REGIAO UNIQUE(NOME),
+    CONSTRAINT UQ_REGIAO_NOME_REGIAO UNIQUE(NOME_REGIAO),
     CONSTRAINT UQ_REGIAO_SIGLA UNIQUE(SIGLA)
 );
 
@@ -157,6 +156,14 @@ CREATE TABLE CLIENTE_ENDERECO (
 );
 
 --------------------------------------------------------------------------------
+-- TABELA: CONTATO
+--------------------------------------------------------------------------------
+CREATE TABLE CONTATO (
+    ID_CONTATO NUMBER(8) PRIMARY KEY,
+    CONTATO VARCHAR2(15) NOT NULL
+);
+
+--------------------------------------------------------------------------------
 -- TABELA: LOJA
 --------------------------------------------------------------------------------
 CREATE TABLE LOJA (
@@ -164,7 +171,7 @@ CREATE TABLE LOJA (
     NOME_LOJA VARCHAR2(30) NOT NULL,
     CNPJ CHAR(14) NOT NULL,
     EMAIL VARCHAR2(30) NOT NULL,
-    ID_CONTATO NUMBER() NOT NULL,
+    ID_CONTATO NUMBER(8) NOT NULL,
     ID_ENDERECO NUMBER(8) NOT NULL,
 
     CONSTRAINT FK_LOJA_ID_CONTATO 
@@ -315,20 +322,12 @@ CREATE TABLE PRODUTO (
     CLASSIFICACAO_KIDS CHAR(1), 
     DESCRICAO VARCHAR2(255),
     AVALIACAO NUMBER(3,2),
-    TAMANHO VARCHAR2(10),
+    TAMANHO VARCHAR2(20),
     ID_CATEGORIA NUMBER(3) NOT NULL,
 
     CONSTRAINT FK_PRODUTO_ID_CATEGORIA 
         FOREIGN KEY (ID_CATEGORIA) REFERENCES PRODUTO_CATEGORIA(ID_CATEGORIA),
     CONSTRAINT CK_PRODUTO_CLASSIFICACAO_KIDS CHECK(CLASSIFICACAO_KIDS IN (0, 1))
-);
-
---------------------------------------------------------------------------------
--- TABELA: CONTATO
---------------------------------------------------------------------------------
-CREATE TABLE CONTATO (
-    ID_CONTATO NUMBER(8) PRIMARY KEY,
-    CONTATO VARCHAR2(15) NOT NULL,
 );
 
 --------------------------------------------------------------------------------
