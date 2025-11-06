@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- BANCO DE DADOS: ORACLE
 -- PROJETO: E-COMMERCE REFINADO
--- TOTAL DE TABELAS: 23
+-- TOTAL DE TABELAS: 27
 -- AUTOR: ALEXIS PEREIRA DOS SANTOS
 --------------------------------------------------------------------------------
 
@@ -11,7 +11,9 @@
 --------------------------------------------------------------------------------
 CREATE TABLE GENERO (
     ID_GENERO NUMBER(1) PRIMARY KEY,
-    DESCRICAO VARCHAR2(30)
+    DESCRICAO VARCHAR2(30) NOT NULL,
+
+    CONSTRAINT UQ_GENERO_DESCRICAO UNIQUE(DESCRICAO)
 );
 
 --------------------------------------------------------------------------------
@@ -19,7 +21,9 @@ CREATE TABLE GENERO (
 --------------------------------------------------------------------------------
 CREATE TABLE TIPO_PESSOA (
     ID_TIPO_PESSOA NUMBER(1) PRIMARY KEY,
-    DESCRICAO VARCHAR2(30)
+    DESCRICAO VARCHAR2(30) NOT NULL,
+
+    CONSTRAINT UQ_TIPO_PESSOA_DESCRICAO UNIQUE(DESCRICAO)
 );
 
 --------------------------------------------------------------------------------
@@ -27,7 +31,66 @@ CREATE TABLE TIPO_PESSOA (
 --------------------------------------------------------------------------------
 CREATE TABLE SITUACAO_CLIENTE (
     ID_SITUACAO NUMBER(1) PRIMARY KEY,
-    DESCRICAO VARCHAR2(30)
+    DESCRICAO VARCHAR2(30) NOT NULL,
+
+    CONSTRAINT UQ_SITUACAO_CLIENTE_DESCRICAO UNIQUE(DESCRICAO)
+);
+
+--------------------------------------------------------------------------------
+-- TABELA: REGIAO
+--------------------------------------------------------------------------------
+
+CREATE TABLE REGIAO(
+    ID_REGIAO NUMBER(1) PRIMARY KEY,
+    NOME_REGIAO VARCHAR(20) NOT NULL,
+    SIGLA CHAR(2) NOT NULL,
+
+    CONSTRAINT UQ_REGIAO_NOME_REGIAO UNIQUE(NOME),
+    CONSTRAINT UQ_REGIAO_SIGLA UNIQUE(SIGLA)
+);
+
+--------------------------------------------------------------------------------
+-- TABELA: ESTADO
+--------------------------------------------------------------------------------
+CREATE TABLE ESTADO(
+    ID_ESTADO NUMBER(2) PRIMARY KEY,
+    NOME_ESTADO VARCHAR2(25) NOT NULL,
+    UF CHAR(2) NOT NULL,
+    ID_REGIAO NUMBER(1) NOT NULL,
+
+    CONSTRAINT FK_ESTADO_ID_REGIAO 
+        FOREIGN KEY(ID_REGIAO) REFERENCES REGIAO(ID_REGIAO),
+
+    CONSTRAINT UQ_ESTADO_NOME_ESTADO UNIQUE(NOME_ESTADO),
+    CONSTRAINT UQ_ESTADO_UF UNIQUE(UF)
+);
+
+--------------------------------------------------------------------------------
+-- TABELA: CIDADE
+--------------------------------------------------------------------------------
+CREATE TABLE CIDADE(
+    ID_CIDADE NUMBER(4) PRIMARY KEY,
+    NOME_CIDADE VARCHAR2(30) NOT NULL,
+    ID_ESTADO NUMBER(2) NOT NULL,
+
+    CONSTRAINT FK_CIDADE_ID_ESTADO 
+        FOREIGN KEY (ID_ESTADO) REFERENCES ESTADO(ID_ESTADO),
+
+    CONSTRAINT UQ_CIDADE_NOME_CIDADE UNIQUE(NOME_CIDADE)
+);
+
+--------------------------------------------------------------------------------
+-- TABELA: BAIRRO
+--------------------------------------------------------------------------------
+CREATE TABLE BAIRRO(
+    ID_BAIRRO NUMBER(5) PRIMARY KEY,
+    NOME_BAIRRO VARCHAR2(30) NOT NULL,
+    ID_CIDADE NUMBER(4) NOT NULL,
+
+    CONSTRAINT FK_BAIRRO_ID_CIDADE
+        FOREIGN KEY(ID_CIDADE) REFERENCES CIDADE(ID_CIDADE),
+
+    CONSTRAINT UQ_BAIRRO_NOME_BAIRRO UNIQUE(NOME_BAIRRO)
 );
 
 --------------------------------------------------------------------------------
@@ -37,10 +100,8 @@ CREATE TABLE ENDERECO (
     ID_ENDERECO NUMBER(8) PRIMARY KEY,
     CEP VARCHAR2(10) NOT NULL,
     LOGRADOURO VARCHAR2(30) NOT NULL,
-    BAIRRO VARCHAR2(30) NOT NULL,
-    CIDADE VARCHAR2(20) NOT NULL,
-    ESTADO CHAR(2) NOT NULL,
-    NUMERO VARCHAR2(6),
+    ID_BAIRRO NUMBER(5) NOT NULL,
+    NUMERO VARCHAR2(6) NOT NULL, -- pode conter letras (ex: "37B")
     COMPLEMENTO VARCHAR(20)
 );
 
@@ -83,7 +144,7 @@ CREATE TABLE CLIENTE (
 CREATE TABLE CLIENTE_ENDERECO (
     ID_CLIENTE NUMBER(7),
     ID_ENDERECO NUMBER(8),
-    ENDERECO_PRINCIPAL NUMBER(1),
+    ENDERECO_PRINCIPAL CHAR(1) NOT NULL,
 
     PRIMARY KEY (ID_CLIENTE, ID_ENDERECO),
 
@@ -115,7 +176,9 @@ CREATE TABLE LOJA (
 --------------------------------------------------------------------------------
 CREATE TABLE VENDEDOR_TIPO_CONTRATO (
     ID_TIPO_CONTRATO NUMBER(1) PRIMARY KEY,
-    DESCRICAO VARCHAR2(20)
+    DESCRICAO VARCHAR2(20) NOT NULL,
+
+    CONSTRAINT UQ_VENDEDOR_TIPO_CONTRATO_DESCRICAO UNIQUE(DESCRICAO)
 );
 
 --------------------------------------------------------------------------------
@@ -161,7 +224,9 @@ CREATE TABLE VENDEDOR (
 --------------------------------------------------------------------------------
 CREATE TABLE TIPO_PAGAMENTO (
     ID_TIPO_PAGAMENTO NUMBER(1) PRIMARY KEY,
-    DESCRICAO VARCHAR2(30)
+    DESCRICAO VARCHAR2(30) NOT NULL,
+
+    CONSTRAINT UQ_TIPO_PAGAMENTO_DESCRICAO UNIQUE(DESCRICAO)
 );
 
 --------------------------------------------------------------------------------
@@ -169,7 +234,9 @@ CREATE TABLE TIPO_PAGAMENTO (
 --------------------------------------------------------------------------------
 CREATE TABLE STATUS_DESCRICAO (
     ID_STATUS NUMBER(1) PRIMARY KEY,
-    DESCRICAO VARCHAR2(20)
+    DESCRICAO VARCHAR2(20) NOT NULL,
+
+    CONSTRAINT UQ_STATUS_DESCRICAO_DESCRICAO UNIQUE(DESCRICAO)
 );
 
 --------------------------------------------------------------------------------
@@ -229,7 +296,9 @@ CREATE TABLE FORNECEDOR (
 --------------------------------------------------------------------------------
 CREATE TABLE PRODUTO_CATEGORIA (
     ID_CATEGORIA NUMBER(3) PRIMARY KEY,
-    DESCRICAO VARCHAR2(30)
+    DESCRICAO VARCHAR2(30) NOT NULL,
+
+    CONSTRAINT UQ_PRODUTO_CATEGORIA_DESCRICAO UNIQUE(DESCRICAO)
 );
 
 --------------------------------------------------------------------------------
@@ -254,7 +323,7 @@ CREATE TABLE PRODUTO (
 --------------------------------------------------------------------------------
 CREATE TABLE CONTATO (
     ID_CONTATO NUMBER(8) PRIMARY KEY,
-    CONTATO VARCHAR2(15)
+    CONTATO VARCHAR2(15) NOT NULL,
 );
 
 --------------------------------------------------------------------------------
@@ -298,8 +367,8 @@ CREATE TABLE PRODUTO_LOJA_ESTOQUE (
 CREATE TABLE ITEM_PEDIDO (
     ID_PEDIDO NUMBER(7),
     ID_PRODUTO NUMBER(5),
-    QUANTIDADE NUMBER(6),
-    PRECO_UNITARIO NUMBER(7,2),
+    QUANTIDADE NUMBER(6) NOT NULL,
+    PRECO_UNITARIO NUMBER(7,2) NOT NULL,
     DESCONTO NUMBER(7,2),
 
     PRIMARY KEY (ID_PEDIDO, ID_PRODUTO),
