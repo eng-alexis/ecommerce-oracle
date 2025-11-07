@@ -160,7 +160,9 @@ CREATE TABLE CLIENTE_ENDERECO (
 --------------------------------------------------------------------------------
 CREATE TABLE CONTATO (
     ID_CONTATO NUMBER(8) PRIMARY KEY,
-    CONTATO VARCHAR2(15) NOT NULL
+    CONTATO VARCHAR2(15) NOT NULL,
+
+    CONSTRAINT UQ_CONTATO_CONTATO UNIQUE(CONTATO)
 );
 
 --------------------------------------------------------------------------------
