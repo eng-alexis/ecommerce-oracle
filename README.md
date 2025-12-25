@@ -1,13 +1,4 @@
-# 🚧 Projeto em Desenvolvimento
-
-Este repositório faz parte de um desafio de projeto do bootcamp DIO.
-No momento estou sem acesso a um computador, portanto a implementação será adicionada em breve.
-
-Agradeço pela compreensão! 🙌
-
---------------
-
-# 🛒 Projeto de Banco de Dados E-commerce (Oracle SQL)
+# 🛒 Projeto de Banco de Dados E-Commerce (Oracle SQL)
 
 ## 📚 Contexto
 
@@ -84,5 +75,5 @@ A versão refinada do modelo introduz melhorias de estrutura e normalização, p
 ---
 
 ## 👨‍💻 Autor
-Alexis Pereira
+Alexis Pereira Dos Santos
 📧 E-mail: alexispereira220@gmail.com
